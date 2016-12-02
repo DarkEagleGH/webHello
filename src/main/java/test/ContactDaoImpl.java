@@ -15,12 +15,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 
 public class ContactDaoImpl implements ContactDao {
-        private DataSource dataSource;
         private JdbcTemplate jdbcTemplate;
         private NamedParameterJdbcTemplate namedTemplate;
 
         public void setDataSource(DataSource dataSource) {
-            this.dataSource = dataSource;
             this.jdbcTemplate = new JdbcTemplate(dataSource);
             this.namedTemplate = new NamedParameterJdbcTemplate(dataSource);
         }
@@ -37,7 +35,9 @@ public class ContactDaoImpl implements ContactDao {
 
         @Override
         public List<Contact> getAll() {
-            return jdbcTemplate.query("SELECT * FROM contacts", rowMapper);
+            System.out.println("la-la");
+            jdbcTemplate.query("SELECT * FROM contacts WHERE id = 1", rowMapper);
+            return jdbcTemplate.query("SELECT * FROM contacts LIMIT 1000", rowMapper);
         }
 
         @Override

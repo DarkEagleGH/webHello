@@ -8,7 +8,6 @@ class Contacts {
     Contacts(List<Contact> contactList) {
         this.contactList = contactList;
     }
-
     public List<Contact> getContacts() {
         return contactList;
     }
