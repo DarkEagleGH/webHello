@@ -1,19 +1,15 @@
 package test;
 
+import java.util.List;
+
 class Contacts {
-    private final long id;
-    private final String name;
+    private List<Contact> contactList;
 
-    Contacts(long id, String name) {
-        this.id = id;
-        this.name = name;
+    Contacts(List<Contact> contactList) {
+        this.contactList = contactList;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
+    public List<Contact> getContacts() {
+        return contactList;
     }
 }
