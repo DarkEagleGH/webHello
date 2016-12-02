@@ -1,14 +1,14 @@
 package test;
 
-import java.util.List;
+import java.util.LinkedList;
 
 class Contacts {
-    private List<Contact> contactList;
+    private LinkedList<Contact> contactList;
 
-    Contacts(List<Contact> contactList) {
+    Contacts(LinkedList<Contact> contactList) {
         this.contactList = contactList;
     }
-    public List<Contact> getContacts() {
+    public LinkedList<Contact> getContacts() {
         return contactList;
     }
 }

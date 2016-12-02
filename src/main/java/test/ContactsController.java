@@ -1,5 +1,6 @@
 package test;
 
+import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +15,11 @@ public class ContactsController {
     private ContactRepository contactRepository;
 
     @RequestMapping("/contacts")
-    public Contacts contacts(@RequestParam(value="nameFilter", defaultValue="^.*[aei].*$") String nameFilter) {
+    public LinkedList<Contact> contacts(@RequestParam(value="nameFilter", defaultValue="^.*[aei].*$") String nameFilter) {
 
-        Contacts contactList = new Contacts(contactRepository.findAll());
+        LinkedList<Contact> contactList = new LinkedList<>(contactRepository.findWithLimit(1500));
 
-        if (contactList != null) {
-            return contactList;
-        } else {
-            System.out.println("contactList is null");
-            System.exit(0);
-        }
-        return null;
+        return contactList;
 //        return new Contacts(counter.incrementAndGet(), nameFilter);
     }
 }
