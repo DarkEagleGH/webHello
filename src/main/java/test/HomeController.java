@@ -9,6 +9,6 @@ public class HomeController {
     @RequestMapping("/")
     @ResponseBody
     public String contacts() {
-        return "Sample";
+        return "Hello task 2";
     }
 }
