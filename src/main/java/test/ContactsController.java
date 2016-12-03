@@ -16,9 +16,14 @@ public class ContactsController {
     @RequestMapping("/contacts")
     public LinkedList<Contact> contacts(@RequestParam(value="nameFilter", defaultValue="^.*[aei].*$") String nameFilter) {
 
-        LinkedList<Contact> contactList = new LinkedList<>(contactRepository.findWithLimit(1500));
-
-        return contactList;
+//        LinkedList<Contact> contactList = new LinkedList<>(contactRepository.findWithLimit(1500));
+        ContactsFilter contactsFilter = new ContactsFilter(new LinkedList<>(contactRepository.findWithLimit(1500)));
+        if (contactsFilter.setFilter(nameFilter)){
+            return contactsFilter.getFiltered();
+        } else {
+            System.out.println("wrong filter");
+            return null;
+        }
 //        return new Contacts(counter.incrementAndGet(), nameFilter);
     }
 }
