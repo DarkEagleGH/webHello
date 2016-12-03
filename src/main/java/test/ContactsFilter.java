@@ -10,6 +10,7 @@ public class ContactsFilter {
 
     private LinkedList<Contact> filtered;
     private Pattern pattern;
+    private String lastActionError;
 
     private ContactsFilter () {
     }
@@ -21,12 +22,14 @@ public class ContactsFilter {
     public boolean setFilter (String filter) {
         try {
             pattern = Pattern.compile(filter);
+            lastActionError = null;
             return true;
         } catch (PatternSyntaxException exception) {
-            System.err.println(exception.getDescription());
+            lastActionError = exception.getDescription();
             return false;
         }
     }
+
     public LinkedList<Contact> getFiltered () {
         return filtered;
     }
@@ -43,5 +46,9 @@ public class ContactsFilter {
                 i.remove();
             }
         }
+    }
+
+    public String getLastActionError () {
+        return lastActionError;
     }
 }
