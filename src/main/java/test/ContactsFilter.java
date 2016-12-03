@@ -27,8 +27,11 @@ public class ContactsFilter {
             return false;
         }
     }
-
     public LinkedList<Contact> getFiltered () {
+        return filtered;
+    }
+
+    public void applyFilter () {
         if (pattern == null) {
             pattern = Pattern.compile("");
         }
@@ -40,6 +43,5 @@ public class ContactsFilter {
                 i.remove();
             }
         }
-        return filtered;
     }
 }
