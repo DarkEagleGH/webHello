@@ -16,12 +16,12 @@ public class ContactRepository {
 
     @Transactional(readOnly=true)
     public List<Contact> findAll() {
-        return jdbcTemplate.query("select * from contacts", new UserRowMapper());
+        return jdbcTemplate.query("select * from contacts ORDER BY id", new UserRowMapper());
     }
 
     @Transactional(readOnly=true)
     public List<Contact> findWithLimit(long limit) {
-        return jdbcTemplate.query("select * from contacts LIMIT ?", new Object[]{limit},  new UserRowMapper());
+        return jdbcTemplate.query("select * from contacts ORDER BY id LIMIT ?", new Object[]{limit},  new UserRowMapper());
     }
 }
 

@@ -17,8 +17,14 @@ public class ContactsController {
     private ContactRepository contactRepository;
 
     @RequestMapping("/contacts")
-    public ResponseEntity<LinkedList<Contact>> contacts(@RequestParam(value="nameFilter", defaultValue="^.*[aei].*$") String nameFilter) {
-        ContactsFilter contactsFilter = new ContactsFilter(new LinkedList<>(contactRepository.findWithLimit(1500)));
+    public ResponseEntity<LinkedList<Contact>> contacts(@RequestParam(value="nameFilter", defaultValue="") String nameFilter) {
+//        ContactsFilter contactsFilter = new ContactsFilter(new LinkedList<>(contactRepository.findWithLimit(1500)));
+        ContactsFilter contactsFilter = new ContactsFilter(new LinkedList<>(contactRepository.findAll()));
+        System.out.println(String.format("nameFilter: \'%s\'",  nameFilter));
+        if (nameFilter.isEmpty()) {
+            System.out.println("empty nameFilter. return without filtering");
+            return new ResponseEntity<>(contactsFilter.getFiltered(), HttpStatus.OK);
+        }
         HttpHeaders headers = new HttpHeaders();
         if (contactsFilter.setFilter(nameFilter)){
             contactsFilter.applyFilter();

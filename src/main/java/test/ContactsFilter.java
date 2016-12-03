@@ -33,7 +33,7 @@ public class ContactsFilter {
 
     public void applyFilter () {
         if (pattern == null) {
-            pattern = Pattern.compile("");
+            return;
         }
         Matcher matcher;
         final Iterator<Contact> i = filtered.iterator();
