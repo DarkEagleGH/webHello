@@ -57,12 +57,15 @@ public class ContactsController {
             long pos = 0;
             long lim = 1000000;
             while (pos < cnt) {
-                String jsonInString = mapper.writeValueAsString(chunk(pos, lim, pattern));
-                System.out.println(jsonInString);
+                ContactsFilter contactsFilter = new ContactsFilter(
+                            new LinkedList<>(contactRepository.findInRange(pos, lim)));
+                contactsFilter.setFilter(pattern);
+                contactsFilter.applyFilter();
                 pos += lim;
-                if (jsonInString.isEmpty()) {
+                if (contactsFilter.getContacts().isEmpty()) {
                     continue;
                 }
+                String jsonInString = mapper.writeValueAsString(contactsFilter.getContacts());
                 os.write(jsonInString.getBytes());
                 os.flush();
             }
@@ -71,19 +74,7 @@ public class ContactsController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-//        ContactsFilter contactsFilter = new ContactsFilter(new LinkedList<>(contactRepository.findWithLimit(1500)));
-//        ContactsFilter contactsFilter = new ContactsFilter(new LinkedList<>(contactRepository.findAll()));
-
         logger.debug("Used memory: \"{}\"", (instance.totalMemory() - instance.freeMemory()) / mb);
-
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @ResponseBody
-    private LinkedList<Contact> chunk (long from, long limit, Pattern filter) {
-        ContactsFilter contactsFilter = new ContactsFilter(new LinkedList<>(contactRepository.findInRange(from, limit)));
-        contactsFilter.setFilter(filter);
-        contactsFilter.applyFilter();
-        return contactsFilter.getContacts();
     }
 }
