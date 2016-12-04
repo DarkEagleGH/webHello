@@ -23,7 +23,7 @@ public class ContactsController {
         if (logger.isDebugEnabled()) {
             logger.debug("nameFilter: \"{}\"", nameFilter);
         }
-        ContactsFilter contactsFilter = new ContactsFilter(new LinkedList<>(contactRepository.findWithLimit(1500)));
+        ContactsFilter contactsFilter = new ContactsFilter(new LinkedList<>(contactRepository.findAll()));
 //        ContactsFilter contactsFilter = new ContactsFilter(new LinkedList<>(contactRepository.findAll()));
 
         if (nameFilter.isEmpty()) {
