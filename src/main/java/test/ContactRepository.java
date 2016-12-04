@@ -16,12 +16,23 @@ public class ContactRepository {
 
     @Transactional(readOnly=true)
     public List<Contact> findAll() {
-        return jdbcTemplate.query("select * from contacts ORDER BY id", new UserRowMapper());
+        return jdbcTemplate.query("SELECT * FROM contacts ORDER BY id", new UserRowMapper());
     }
 
     @Transactional(readOnly=true)
     public List<Contact> findWithLimit(long limit) {
         return jdbcTemplate.query("select * from contacts ORDER BY id LIMIT ?", new Object[]{limit},  new UserRowMapper());
+    }
+    // 300-450 ms avg
+    @Transactional(readOnly=true)
+    public List<Contact> findInRange(long from, long limit) {
+        return jdbcTemplate.query("SELECT * FROM contacts WHERE id > ? ORDER BY id LIMIT ?",
+                new Object[]{from,limit},  new UserRowMapper());
+    }
+
+    @Transactional(readOnly=true)
+    public long getCount() {
+        return jdbcTemplate.queryForObject("SELECT count (*) FROM contacts", Long.class);
     }
 }
 
