@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ContactsController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    int mb = 1024 * 1024;
+    Runtime instance = Runtime.getRuntime();
 
     @Autowired
     private ContactRepository contactRepository;
 
     @RequestMapping("/hello/contacts")
     public ResponseEntity<LinkedList<Contact>> contacts(@RequestParam(value="nameFilter", defaultValue="") String nameFilter) {
+        logger.debug("Used memory: \"{}\"", (instance.totalMemory() - instance.freeMemory()) / mb);
         if (logger.isDebugEnabled()) {
             logger.debug("nameFilter: \"{}\"", nameFilter);
         }
@@ -45,6 +48,7 @@ public class ContactsController {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Return 200 OK");
                 }
+                logger.debug("Used memory: \"{}\"", (instance.totalMemory() - instance.freeMemory()) / mb);
                 return new ResponseEntity<>(contactsFilter.getFiltered(), HttpStatus.OK);
             }
         } else {
