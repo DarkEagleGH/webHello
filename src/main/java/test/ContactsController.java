@@ -37,6 +37,7 @@ public class ContactsController {
         if (logger.isDebugEnabled()) {
             logger.debug("nameFilter: \"{}\"", nameFilter);
         }
+
         try {
             pattern = Pattern.compile(nameFilter);
         } catch (PatternSyntaxException exception) {
@@ -69,11 +70,8 @@ public class ContactsController {
                 String jsonInString = mapper.writeValueAsString(contactsFilter.getContacts());
                 jsonInString = jsonInString.substring(1,jsonInString.length()-1);
                 os.write(jsonInString.getBytes());
-                os.flush();
             }
             os.write(']');
-            os.flush();
-            os.close();
         } catch (IOException e) {
             if (logger.isDebugEnabled()) {
                 logger.debug(e.getMessage());
