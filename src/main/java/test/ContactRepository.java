@@ -23,7 +23,7 @@ public class ContactRepository {
     public List<Contact> findWithLimit(long limit) {
         return jdbcTemplate.query("select * from contacts ORDER BY id LIMIT ?", new Object[]{limit},  new UserRowMapper());
     }
-    // 300-450 ms avg
+
     @Transactional(readOnly=true)
     public List<Contact> findInRange(long from, long limit) {
         return jdbcTemplate.query("SELECT * FROM contacts WHERE id > ? ORDER BY id LIMIT ?",
