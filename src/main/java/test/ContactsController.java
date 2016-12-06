@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ContactsController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private Pattern pattern;
-    private final long LIM = 200000;
+    private final long LIM = 100000;
 
     @Autowired
     private ContactRepository contactRepository;
