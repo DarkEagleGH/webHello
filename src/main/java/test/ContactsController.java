@@ -25,6 +25,9 @@ public class ContactsController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private Pattern pattern;
     private final long LIM = 100000;
+    private ContactsFilter contactsFilter = new ContactsFilter();
+    private ObjectMapper mapper = new ObjectMapper();
+    private String jsonInString;
 
     @Autowired
     private ContactRepository contactRepository;
@@ -52,13 +55,11 @@ public class ContactsController {
             return new ResponseEntity<>(responseHeaders, HttpStatus.BAD_REQUEST);
         }
 
-        ContactsFilter contactsFilter = new ContactsFilter();
         contactsFilter.setFilter(pattern);
         long cnt = contactRepository.findLast().get(0).getId();
         long pos = 0;
         try {
             ServletOutputStream os = response.getOutputStream();
-            ObjectMapper mapper = new ObjectMapper();
             os.write('[');
             while (pos < cnt) {
                 contactsFilter.setContacts(new LinkedList<>(contactRepository.findInRange(pos, LIM)));
@@ -67,7 +68,7 @@ public class ContactsController {
                 if (contactsFilter.getContacts().isEmpty()) {
                     continue;
                 }
-                String jsonInString = mapper.writeValueAsString(contactsFilter.getContacts());
+                jsonInString = mapper.writeValueAsString(contactsFilter.getContacts());
                 jsonInString = jsonInString.substring(1,jsonInString.length()-1);
                 os.write(jsonInString.getBytes());
             }
