@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,15 +41,19 @@ public class ContactsController {
             pattern = Pattern.compile(nameFilter);
         } catch (PatternSyntaxException exception) {
             if (logger.isDebugEnabled()) {
-                logger.debug("NameFilter: \"{}\" is not valid regex ({}). Response 400 Bad request", nameFilter,
+                logger.debug("\"{}\" is not valid regex ({}). Response 400 Bad request", nameFilter,
                         exception.getDescription());
             }
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.set("message",
+                    String.format("\"%s\" is not valid regex (%s). Response 400 Bad request", nameFilter,
+                                    exception.getDescription()));
+            return new ResponseEntity<>(responseHeaders, HttpStatus.BAD_REQUEST);
         }
 
         ContactsFilter contactsFilter = new ContactsFilter();
         contactsFilter.setFilter(pattern);
-        long cnt = contactRepository.getCount();
+        long cnt = contactRepository.findLast().get(0).getId();
         long pos = 0;
         try {
             ServletOutputStream os = response.getOutputStream();
@@ -56,8 +61,8 @@ public class ContactsController {
             os.write('[');
             while (pos < cnt) {
                 contactsFilter.setContacts(new LinkedList<>(contactRepository.findInRange(pos, LIM)));
+                pos = contactsFilter.getContacts().getLast().getId();
                 contactsFilter.applyFilter();
-                pos += LIM;
                 if (contactsFilter.getContacts().isEmpty()) {
                     continue;
                 }
@@ -73,6 +78,9 @@ public class ContactsController {
             if (logger.isDebugEnabled()) {
                 logger.debug(e.getMessage());
             }
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.set("message",
+                    String.format("I/O error: %s. Response 400 Bad request", e.getMessage()));
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         if (logger.isDebugEnabled()) {

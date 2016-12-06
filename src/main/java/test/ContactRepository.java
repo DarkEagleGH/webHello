@@ -20,8 +20,9 @@ public class ContactRepository {
     }
 
     @Transactional(readOnly=true)
-    public List<Contact> findWithLimit(long limit) {
-        return jdbcTemplate.query("select * from contacts ORDER BY id LIMIT ?", new Object[]{limit},  new UserRowMapper());
+    public List<Contact> findLast() {
+        return jdbcTemplate.query("select * from contacts order by id desc limit 1",
+                new UserRowMapper());
     }
 
     @Transactional(readOnly=true)
