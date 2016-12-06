@@ -11,7 +11,6 @@ import java.util.List;
 
 @Repository
 public class ContactRepository {
-//    @Autowired
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
