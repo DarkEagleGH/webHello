@@ -11,8 +11,8 @@ Maven
     -- vagrant up
     -- java -jar webhello-0.0.1-SNAPSHOT.jar
 - В браузере открыть http://127.0.0.1:8080/hello/contacts?nameFilter=[regexp], например:
-    -- http://127.0.0.1:8080/hello/contacts?nameFilter=^A.*$
-    -- http://127.0.0.1:8080/hello/contacts?nameFilter=^.*[aei].*$
+    http://127.0.0.1:8080/hello/contacts?nameFilter=^A.*$,    
+    http://127.0.0.1:8080/hello/contacts?nameFilter=^.*[aei].*$
 
 // Первый запуск и vagrant занимает 3-6 минут. Объем виртуальной машины - 0.5 - 3 Гб.
 
