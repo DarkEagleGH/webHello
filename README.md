@@ -1,5 +1,5 @@
 # webHello
-[![Build Status](https://travis-ci.org/DarkEagleGH/Hello.svg?branch=master)](https://travis-ci.org/DarkEagleGH/Hello)
+[![Build Status](https://travis-ci.org/DarkEagleGH/webHello.svg?branch=master)](https://travis-ci.org/DarkEagleGH/webHello)
 
 REST with Spring Boot
 PostgreSQL 9.4
